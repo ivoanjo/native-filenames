@@ -31,8 +31,14 @@ require "direct_bind/rspec_helper"
 RSpec.describe NativeFilenames do
   describe ".filename_for" do
     context "for a native method in the standard library" do
+      # Note: It's possible to build Ruby without a libruby, or in other weird configurations
       it do
-        expect(NativeFilenames.filename_for(Array, :each)).to include("/libruby.so")
+        expect(NativeFilenames.filename_for(Array, :each)).to(
+          include("/libruby.so.")
+          .or(match(/\/libruby([.]\d?){0,2}.dylib/)
+          .or(end_with("/libruby.dll")
+          .or(end_with("/ruby"))))
+        )
       end
     end
 
@@ -40,13 +46,21 @@ RSpec.describe NativeFilenames do
       require "bigdecimal"
 
       it do
-        expect(NativeFilenames.filename_for(BigDecimal.singleton_class, :save_rounding_mode)).to include("/bigdecimal.so")
+        expect(NativeFilenames.filename_for(BigDecimal.singleton_class, :save_rounding_mode)).to(
+          end_with("/bigdecimal.so")
+          .or(end_with("/bigdecimal.bundle")
+          .or(end_with("/bigdecimal.dll")))
+        )
       end
     end
 
     context "for a native method in the current gem" do
-      it do # ;)
-        expect(NativeFilenames.filename_for(NativeFilenames.singleton_class, :filename_for)).to include("/native_filenames_extension.so")
+      it do
+        expect(NativeFilenames.filename_for(NativeFilenames.singleton_class, :filename_for)).to( # ;)
+          end_with("/native_filenames_extension.so")
+          .or(end_with("/native_filenames_extension.bundle")
+          .or(end_with("/native_filenames_extension.dll")))
+        )
       end
     end
 

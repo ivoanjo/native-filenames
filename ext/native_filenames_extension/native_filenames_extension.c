@@ -29,7 +29,7 @@
 
 static VALUE get_native_filename(void *func);
 
-VALUE filename_for(VALUE _self, VALUE klass, VALUE method) {
+VALUE filename_for(__attribute__((unused)) VALUE _self, VALUE klass, VALUE method) {
   direct_bind_cfunc_result result = direct_bind_get_cfunc(klass, SYM2ID(method), true);
   void *func = result.func;
   return get_native_filename(func);
@@ -80,7 +80,7 @@ void Init_native_filenames_extension(void) {
     ) ? rb_utf8_str_new_cstr(native_filename) : Qnil;
   }
 #else
-  static VALUE get_native_filename(__attribute__((unused)) void *func) {
+  static VALUE get_native_filename(__attribute__((unused)) void *_func) {
     rb_raise(rb_eRuntimeError, "native-filenames failed: not supported on current OS. Please report to https://github.com/ivoanjo/native-filenames");
   }
 #endif

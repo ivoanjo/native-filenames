@@ -20,7 +20,7 @@ jobs:
         - { os: windows-2025, ruby: '3.5' }
         - { os: windows-2025, ruby: 'debug' }
         - { os: windows-11-arm, ruby: '2.5' }
-        - { os: windows-11-arm, ruby: '3.6' }
+        - { os: windows-11-arm, ruby: '2.6' }
         - { os: windows-11-arm, ruby: '2.7' }
         - { os: windows-11-arm, ruby: '3.0' }
         - { os: windows-11-arm, ruby: '3.1' }
