@@ -42,7 +42,7 @@ void Init_native_filenames_extension(void) {
   rb_define_singleton_method(native_filenames_module, "filename_for", filename_for, 2);
 }
 
-#if (defined(HAVE_DLADDR1) || defined(HAVE_DLADDR)) && (HAVE_DLADDR1 || HAVE_DLADDR)
+#if (defined(HAVE_DLADDR1) && HAVE_DLADDR1) || (defined(HAVE_DLADDR) && HAVE_DLADDR)
   #ifndef _GNU_SOURCE
     #define _GNU_SOURCE
   #endif
