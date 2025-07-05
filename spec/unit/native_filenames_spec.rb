@@ -35,7 +35,7 @@ RSpec.describe NativeFilenames do
       it do
         expect(NativeFilenames.filename_for(Array, :each)).to(
           include("/libruby.so.")
-          .or(match(/\/libruby([.]\d?){0,2}\.dylib/)
+          .or(match(/\/libruby([.]\d?){0,3}\.dylib/)
           .or(match(/ruby\d+\.dll/)
           .or(end_with("/ruby"))))
         )
