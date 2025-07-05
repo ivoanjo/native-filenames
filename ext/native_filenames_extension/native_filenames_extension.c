@@ -42,31 +42,31 @@ void Init_native_filenames_extension(void) {
   rb_define_singleton_method(native_filenames_module, "filename_for", filename_for, 2);
 }
 
-#if defined(HAVE_DLADDR1) || defined(HAVE_DLADDR)
+#if (defined(HAVE_DLADDR1) || defined(HAVE_DLADDR)) && (HAVE_DLADDR1 || HAVE_DLADDR)
   #ifndef _GNU_SOURCE
     #define _GNU_SOURCE
   #endif
   #include <dlfcn.h>
-  #ifdef HAVE_DLADDR1
+  #if defined(HAVE_DLADDR1) && HAVE_DLADDR1
     #include <link.h>
   #endif
 
   static VALUE get_native_filename(void *func) {
     Dl_info info;
     const char *native_filename = NULL;
-    #ifdef HAVE_DLADDR1
+      #if defined(HAVE_DLADDR1) && HAVE_DLADDR1
       struct link_map *extra_info = NULL;
       if (dladdr1(func, &info, (void **) &extra_info, RTLD_DL_LINKMAP) != 0 && extra_info != NULL) {
         native_filename = extra_info->l_name != NULL ? extra_info->l_name : info.dli_fname;
       }
-    #elif defined(HAVE_DLADDR)
+    #elif defined(HAVE_DLADDR) && HAVE_DLADDR
       if (dladdr(func, &info) != 0) {
         native_filename = info.dli_fname;
       }
     #endif
     return (native_filename != NULL && native_filename[0] != '\0') ? rb_utf8_str_new_cstr(native_filename) : Qnil;
   }
-#elif defined(HAVE_WINDOWS)
+#elif defined(HAVE_WINDOWS_H) && HAVE_WINDOWS_H
   #include <windows.h>
 
   static VALUE get_native_filename(void *func) {
