@@ -23,5 +23,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "direct-bind.h"
+
 void Init_native_filenames_extension(void) {
+  VALUE native_filenames_module = rb_define_module("NativeFilenames");
+
+  direct_bind_initialize(native_filenames_module, true);
 }

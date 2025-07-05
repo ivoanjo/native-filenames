@@ -29,11 +29,13 @@ require "bundler/gem_tasks"
 require "standard/rake" if RUBY_VERSION >= "3.0"
 require "rake/extensiontask"
 require "rspec/core/rake_task"
+require "direct_bind/rake"
 
-Rake::ExtensionTask.new("native_filenames_extension")
 RSpec::Core::RakeTask.new(:spec)
+Rake::ExtensionTask.new("native_filenames_extension")
+DirectBind::Rake::InstallTask.new("native_filenames_extension")
 
-task default: [:compile, (:"standard:fix" if RUBY_VERSION >= "3.0"), :spec].compact
+task default: [:"direct-bind:install", :compile, (:"standard:fix" if RUBY_VERSION >= "3.0"), :spec].compact
 
 Rake::Task["build"].enhance { Rake::Task["spec_validate_permissions"].execute }
 

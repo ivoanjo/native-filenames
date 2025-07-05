@@ -26,6 +26,7 @@
 # frozen_string_literal: true
 
 require_relative "native_filenames/version"
+require "native_filenames_extension"
 
 module NativeFilenames
 end

@@ -26,6 +26,10 @@
 # frozen_string_literal: true
 
 require "native-filenames"
+require "direct_bind/rspec_helper"
 
 RSpec.describe NativeFilenames do
+  it "uses the correct direct-bind gem version" do
+    DirectBind::RSpecHelper.expect_direct_bind_version_to_be_up_to_date_in(NativeFilenames)
+  end
 end
