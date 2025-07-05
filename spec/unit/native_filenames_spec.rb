@@ -29,6 +29,34 @@ require "native-filenames"
 require "direct_bind/rspec_helper"
 
 RSpec.describe NativeFilenames do
+  describe ".filename_for" do
+    context "for a native method in the standard library" do
+      it do
+        expect(NativeFilenames.filename_for(Array, :each)).to include("/libruby.so")
+      end
+    end
+
+    context "for a native method in a third-party library" do
+      require "bigdecimal"
+
+      it do
+        expect(NativeFilenames.filename_for(BigDecimal.singleton_class, :save_rounding_mode)).to include("/bigdecimal.so")
+      end
+    end
+
+    context "for a native method in the current gem" do
+      it do # ;)
+        expect(NativeFilenames.filename_for(NativeFilenames.singleton_class, :filename_for)).to include("/native_filenames_extension.so")
+      end
+    end
+
+    context "for a method that is not native" do
+      it do
+        expect { NativeFilenames.filename_for(RSpec.singleton_class, :describe) }.to raise_error(RuntimeError, /not a cfunc/)
+      end
+    end
+  end
+
   it "uses the correct direct-bind gem version" do
     DirectBind::RSpecHelper.expect_direct_bind_version_to_be_up_to_date_in(NativeFilenames)
   end

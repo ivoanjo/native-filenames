@@ -11,3 +11,4 @@ gem "pry-byebug"
 gem "rspec"
 gem "standard", "~> 1.41" if RUBY_VERSION >= "3.0"
 gem "direct-bind"
+gem "bigdecimal", ">= 3" # For testing

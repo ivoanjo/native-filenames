@@ -42,5 +42,13 @@ append_cflags("-Wall")
 append_cflags("-Wextra")
 append_cflags("-Werror") if ENV["ENABLE_WERROR"] == "true"
 
+# Used to get native filenames (dladdr1 is preferred, so we only check for the other if not available)
+# Note it's possible none are available
+if have_header("dlfcn.h")
+  (have_struct_member("struct link_map", "l_name", "link.h") && have_func("dladdr1")) || have_func("dladdr")
+else
+  have_header("windows.h")
+end
+
 create_header
 create_makefile "native_filenames_extension"
