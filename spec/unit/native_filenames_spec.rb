@@ -35,8 +35,8 @@ RSpec.describe NativeFilenames do
       it do
         expect(NativeFilenames.filename_for(Array, :each)).to(
           include("/libruby.so.")
-          .or(match(/\/libruby([.]\d?){0,2}.dylib/)
-          .or(end_with("/libruby.dll")
+          .or(match(/\/libruby([.]\d?){0,2}\.dylib/)
+          .or(match(/ruby\d+\.dll/)
           .or(end_with("/ruby"))))
         )
       end
@@ -47,9 +47,8 @@ RSpec.describe NativeFilenames do
 
       it do
         expect(NativeFilenames.filename_for(BigDecimal.singleton_class, :save_rounding_mode)).to(
-          end_with("/bigdecimal.so")
-          .or(end_with("/bigdecimal.bundle")
-          .or(end_with("/bigdecimal.dll")))
+          end_with("bigdecimal.so")
+          .or(end_with("/bigdecimal.bundle"))
         )
       end
     end
@@ -57,9 +56,8 @@ RSpec.describe NativeFilenames do
     context "for a native method in the current gem" do
       it do
         expect(NativeFilenames.filename_for(NativeFilenames.singleton_class, :filename_for)).to( # ;)
-          end_with("/native_filenames_extension.so")
-          .or(end_with("/native_filenames_extension.bundle")
-          .or(end_with("/native_filenames_extension.dll")))
+          end_with("native_filenames_extension.so")
+          .or(end_with("/native_filenames_extension.bundle"))
         )
       end
     end
