@@ -26,5 +26,5 @@
 # frozen_string_literal: true
 
 module NativeFilenames
-  VERSION = "0.1.0.dev"
+  VERSION = "1.0.0"
 end
