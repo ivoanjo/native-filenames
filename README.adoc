@@ -4,9 +4,27 @@
 :toclevels: 4
 :toc-title:
 
-Ruby gem for finding out where native methods are defined.
+`native-filenames` is a Ruby gem for finding out where native methods are defined.
 
-TODO: Add better description.
+Here's a few examples:
+
+[source,ruby]
+----
+[1] pry(main)> require 'native-filenames'
+
+# Modern versions of bigdecimal use a native extension:
+[2] pry(main)> require 'bigdecimal'
+[3] pry(main)> NativeFilenames.filename_for(BigDecimal.singleton_class, :save_rounding_mode)
+=> "/rvm/gems/ruby-3.4.4/gems/bigdecimal-3.2.2/lib/bigdecimal.so"
+
+# Can also enquire about the standard library:
+[4] pry(main)> NativeFilenames.filename_for(Array, :each)
+=> "/rvm/rubies/ruby-3.4.4/bin/../lib/libruby.so.3.4"
+
+# If something is written in Ruby, then you get an error:
+[5] pry(main)> NativeFilenames.filename_for(Pry.singleton_class, :start)
+RuntimeError: direct_bind_get_cfunc failed: method_entry is not a cfunc (RuntimeError)
+----
 
 == Installation
 
