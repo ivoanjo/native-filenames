@@ -4,7 +4,9 @@
 :toclevels: 4
 :toc-title:
 
-TODO
+Ruby gem for finding out where native methods are defined.
+
+TODO: Add better description.
 
 == Installation
 
